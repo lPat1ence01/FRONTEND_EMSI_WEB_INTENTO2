@@ -1,0 +1,53 @@
+<h2 class="text-center mt-4">Recepción Agrupada de Extintores</h2>
+
+<form [formGroup]="form" (ngSubmit)="registrarRecepcion()">
+  <div class="container mt-4">
+    <div formArrayName="listaRecepcion">
+      <div class="row g-3 mb-3 extintor-item" *ngFor="let extintor of listaRecepcion.controls; let i = index" [formGroupName]="i">
+        <div class="col-md-3">
+          <label class="form-label">Tipo de Agente</label>
+          <select formControlName="tipoAgente" class="form-select" (change)="onTipoAgenteChange(i)" required>
+            <option value="">-- Seleccione --</option>
+            <option value="A">Clase A - Sólidos</option>
+            <option value="B">Clase B - Líquidos inflamables</option>
+            <option value="C">Clase C - Gases inflamables</option>
+            <option value="D">Clase D - Metales combustibles</option>
+            <option value="K">Clase K - Grasas y aceites</option>
+          </select>
+        </div>
+
+        <div class="col-md-2">
+          <label class="form-label">Clase de Fuego</label>
+          <input type="text" formControlName="claseFuego" class="form-control" readonly />
+        </div>
+
+        <div class="col-md-2">
+          <label class="form-label">Capacidad (KG)</label>
+          <input type="number" formControlName="capacidadKG" class="form-control" step="0.1" required />
+        </div>
+
+        <div class="col-md-2">
+          <label class="form-label">Cantidad</label>
+          <input type="number" formControlName="cantidad" class="form-control" required />
+        </div>
+
+        <div class="col-md-2">
+          <label class="form-label">Fecha Vencimiento</label>
+          <input type="date" formControlName="fechaVencimiento" class="form-control" required />
+        </div>
+
+        <div class="col-md-1 d-flex align-items-end">
+          <button type="button" class="btn btn-danger" (click)="removeExtintor(i)">✖</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-end mt-3">
+      <button type="button" class="btn btn-secondary" (click)="addExtintor()">+ Agregar Otro</button>
+    </div>
+
+    <div class="text-center mt-4">
+      <button type="submit" class="btn btn-success">Registrar Recepción</button>
+    </div>
+  </div>
+</form>

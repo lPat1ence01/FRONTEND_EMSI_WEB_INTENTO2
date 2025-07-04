@@ -8,6 +8,8 @@ import { ClienteComponent } from "./cliente/cliente.component";
 import { BienvenidaComponent } from "./bienvenida/bienvenida.component";
 import { GestionusuariosComponent } from "./gestionusuarios/gestionusuarios.component";
 import { ProveedorComponent } from "./proveedor/proveedor.component";
+import { RecepcionComponent } from "./recepcion/recepcion.component";
+import { ExtintorComponent } from "./extintor/extintor.component";
 
 export const pagesRoutes: Routes = [
     {
@@ -26,6 +28,14 @@ export const pagesRoutes: Routes = [
     {
         path: 'gestionusuarios',
         component: GestionusuariosComponent
+    },
+    {
+        path: 'recepcion',
+        component: RecepcionComponent
+    },
+    {
+        path: 'extintor',
+        component: ExtintorComponent
     },
     {
         path: 'roles',
