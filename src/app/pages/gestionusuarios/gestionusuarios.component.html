@@ -1,0 +1,29 @@
+<div class="container">
+  <h2 class="title">Gestión de Usuarios</h2>
+  <div class="cards-grid">
+    <mat-card class="card" routerLink="/pages/empleado">
+      <mat-icon class="icon">badge</mat-icon>
+      <div class="label">Empleados</div>
+    </mat-card>
+
+    <mat-card class="card" (click)="navegar('/usuarios')">
+      <mat-icon class="icon">person</mat-icon>
+      <div class="label">Usuarios</div>
+    </mat-card>
+
+    <mat-card class="card" (click)="navegar('/roles')">
+      <mat-icon class="icon">security</mat-icon>
+      <div class="label">Roles</div>
+    </mat-card>
+
+    <mat-card class="card" routerLink="/pages/proveedor">
+      <mat-icon class="icon">local_shipping</mat-icon>
+      <div class="label">Proveedores</div>
+    </mat-card>
+ 
+    <mat-card class="card" routerLink="/pages/cliente">
+      <mat-icon class="icon">group</mat-icon>
+      <div class="label">Clientes</div>
+    </mat-card>
+  </div>
+</div>

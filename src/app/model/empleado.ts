@@ -5,5 +5,4 @@ export class Empleado {
     dni!: string;
     correo!: string;
     numCelular!: string;
-    idUser!: number;
 }

@@ -1,0 +1,56 @@
+<mat-dialog-content>
+  <mat-toolbar><span>Información del Proveedor</span></mat-toolbar>
+
+  <form class="example-container" #form="ngForm">
+
+    <mat-form-field appearance="fill">
+      <mat-label>Razón Social</mat-label>
+      <input matInput required [(ngModel)]="proveedor.razonSocial" name="razonSocial" #razon="ngModel">
+      <mat-error *ngIf="razon.invalid && razon.touched">Campo obligatorio</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>RUC</mat-label>
+      <input matInput required pattern="[0-9]{11}" [(ngModel)]="proveedor.ruc" name="ruc" #ruc="ngModel">
+      <mat-error *ngIf="ruc.invalid && ruc.touched">
+        El RUC debe tener 11 dígitos
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Dirección</mat-label>
+      <input matInput required [(ngModel)]="proveedor.direccion" name="direccion" #direccion="ngModel">
+      <mat-error *ngIf="direccion.invalid && direccion.touched">Campo obligatorio</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Celular</mat-label>
+      <input matInput required pattern="[0-9]{9}" [(ngModel)]="proveedor.numCelular" name="numCelular" #celular="ngModel">
+      <mat-error *ngIf="celular.invalid && celular.touched">
+        El número debe tener 9 dígitos
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Correo</mat-label>
+      <input matInput required email [(ngModel)]="proveedor.correo" name="correo" #correo="ngModel">
+      <mat-error *ngIf="correo.invalid && correo.touched">Correo inválido</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Estado</mat-label>
+      <mat-select [(ngModel)]="proveedor.estado" name="estado" required #estado="ngModel">
+        <mat-option [value]="true">Activo</mat-option>
+        <mat-option [value]="false">Inactivo</mat-option>
+      </mat-select>
+      <mat-error *ngIf="estado.invalid && estado.touched">Seleccione un estado</mat-error>
+    </mat-form-field>
+
+    <div class="buttons">
+      <button mat-raised-button color="primary" (click)="operate()" [disabled]="form.invalid">
+        Guardar
+      </button>
+      <button mat-button (click)="close()">Cancelar</button>
+    </div>
+  </form>
+</mat-dialog-content>

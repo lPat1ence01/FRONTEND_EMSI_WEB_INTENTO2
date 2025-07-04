@@ -6,6 +6,8 @@ import { EmpleadoComponent } from "./empleado/empleado.component";
 import { EmpleadoEditComponent } from "./empleado/empleado-edit/empleado-edit.component";
 import { ClienteComponent } from "./cliente/cliente.component";
 import { BienvenidaComponent } from "./bienvenida/bienvenida.component";
+import { GestionusuariosComponent } from "./gestionusuarios/gestionusuarios.component";
+import { ProveedorComponent } from "./proveedor/proveedor.component";
 
 export const pagesRoutes: Routes = [
     {
@@ -20,6 +22,10 @@ export const pagesRoutes: Routes = [
     {
         path: 'dashboard',
         component: DashboardComponent
+    },
+    {
+        path: 'gestionusuarios',
+        component: GestionusuariosComponent
     },
     {
         path: 'roles',
@@ -49,5 +55,9 @@ export const pagesRoutes: Routes = [
     },
     {
         path: "cliente", component: ClienteComponent
+    },
+    {
+        path: "proveedor",
+        component: ProveedorComponent
     }
 ]
