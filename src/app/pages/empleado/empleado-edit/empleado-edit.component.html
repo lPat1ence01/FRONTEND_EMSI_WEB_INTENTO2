@@ -1,0 +1,32 @@
+<mat-dialog-content>
+  <mat-toolbar><span>Información del Empleado</span></mat-toolbar>
+
+  <div class="example-container">
+    <mat-form-field>
+      <input matInput placeholder="Nombre" [(ngModel)]="empleado.nomEmpleado" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Apellido" [(ngModel)]="empleado.apeEmpleado" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="DNI" [(ngModel)]="empleado.dni" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Correo" [(ngModel)]="empleado.correo" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Celular" [(ngModel)]="empleado.numCelular" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="idUser" [(ngModel)]="empleado.idUser" />
+    </mat-form-field>
+
+    <button mat-button (click)="operate()">Guardar</button>
+    <button mat-button (click)="close()">Cancelar</button>
+  </div>
+</mat-dialog-content>

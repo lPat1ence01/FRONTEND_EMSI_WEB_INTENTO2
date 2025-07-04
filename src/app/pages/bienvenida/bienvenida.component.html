@@ -1,0 +1,61 @@
+<div class="bienvenida-container">
+  <div class="glass-card">
+    <!-- Columna izquierda: Reloj -->
+    <div class="left-side">
+      <div class="analog-clock">
+        <div class="hour-hand"></div>
+        <div class="minute-hand"></div>
+        <div class="second-hand"></div>
+        <div class="center-circle"></div>
+        <div class="number" style="transform: rotate(30deg)">3</div>
+        <div class="number" style="transform: rotate(60deg)">2</div>
+        <div class="number" style="transform: rotate(90deg)">1</div>
+        <div class="number" style="transform: rotate(120deg)">12</div>
+        <div class="number" style="transform: rotate(150deg)">11</div>
+        <div class="number" style="transform: rotate(180deg)">10</div>
+        <div class="number" style="transform: rotate(210deg)">9</div>
+        <div class="number" style="transform: rotate(240deg)">8</div>
+        <div class="number" style="transform: rotate(270deg)">7</div>
+        <div class="number" style="transform: rotate(300deg)">6</div>
+        <div class="number" style="transform: rotate(330deg)">5</div>
+        <div class="number" style="transform: rotate(360deg)">4</div>
+      </div>
+    </div>
+
+    <!-- Columna derecha: Contenido -->
+    <div class="right-side">
+      <div class="greeting">
+        <h1>{{ greeting }}, <span class="highlight">{{ nombreUsuario }}</span></h1>
+        <div class="badge">{{ rolUsuario }}</div>
+      </div>
+
+      <div class="time-info">
+        <div class="digital-clock">
+          <div class="time">{{ horaActual }}</div>
+          <div class="date">{{ fechaActual }}</div>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat-card">
+          <div class="stat-value">{{ animatedValue }}%</div>
+          <div class="stat-label">Sistema listo</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">0</div>
+          <div class="stat-label">Notificaciones</div>
+        </div>
+      </div>
+
+      <button class="enter-button" (click)="irAlPanel()">
+        <span>Crear Usuarios</span>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+          xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 12H19M19 12L12 5M19 12L12 19"
+            stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>

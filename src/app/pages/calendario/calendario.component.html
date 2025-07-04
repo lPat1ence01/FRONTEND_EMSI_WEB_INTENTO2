@@ -1,0 +1,166 @@
+<div class="calendar-container">
+  <div class="calendar-header">
+    <div class="header-left">
+      <h1 class="calendar-title">CALENDARIO EMSI</h1>
+      <div class="view-options">
+        <button [class.active]="viewMode === 'month'" (click)="setViewMode('month')">Mes</button>
+        <button [class.active]="viewMode === 'week'" (click)="setViewMode('week')">Semana</button>
+        <button [class.active]="viewMode === 'day'" (click)="setViewMode('day')">Día</button>
+      </div>
+    </div>
+    
+    <div class="header-right">
+      <div class="month-navigation">
+        <button (click)="previousMonth()" class="nav-button">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <h2 class="current-month">{{ currentMonthNameWithYear | uppercase }}</h2>
+        <button (click)="nextMonth()" class="nav-button">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+      <button (click)="goToToday()" class="today-button">HOY</button>
+    </div>
+  </div>
+
+  <div class="weekdays-header">
+    <div *ngFor="let day of weekDays" class="weekday">{{ day | uppercase }}</div>
+  </div>
+
+  <div class="days-grid">
+    <div *ngFor="let day of calendarDays" 
+         [class.empty-day]="!day.inMonth"
+         [class.current-day]="day.isToday"
+         [class.selected-day]="day.isSelected"
+         (click)="selectDay(day)"
+         class="calendar-day">
+      <div class="day-header">
+        <span class="day-number">{{ day.number }}</span>
+        <div *ngIf="day.events.length > 0" class="event-indicators">
+          <div *ngFor="let event of day.events.slice(0, 3)" 
+               class="event-indicator" 
+               [style.background]="event.color"></div>
+        </div>
+      </div>
+      <div *ngIf="day.events.length > 0" class="day-events-preview">
+        <div *ngFor="let event of day.events.slice(0, 2)" 
+             class="event-preview" 
+             [style.border-left-color]="event.color">
+          <span class="event-time">{{ event.time }}</span>
+          <span class="event-title">{{ event.title }}</span>
+        </div>
+        <div *ngIf="day.events.length > 2" class="more-events">
+          +{{ day.events.length - 2 }} más
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="events-panel" *ngIf="selectedDay">
+    <div class="events-panel-header">
+      <h3>EVENTOS - {{ selectedDay.number }} DE {{ currentMonthName | uppercase }}</h3>
+      <button (click)="openAddEvent()" class="add-event-button">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        NUEVO EVENTO
+      </button>
+    </div>
+    
+    <div *ngIf="selectedDay.events.length === 0" class="no-events">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 2V5M16 2V5M3.5 9H20.5M21 19V8C21 6.89543 20.1046 6 19 6H5C3.89543 6 3 6.89543 3 8V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19Z" stroke="#888" stroke-width="2" stroke-linecap="round"/>
+        <path d="M12 12.5V12.51M8 12.5V12.51M16 12.5V12.51" stroke="#888" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <p>No hay eventos programados para este día</p>
+    </div>
+    
+    <div class="events-list">
+      <div *ngFor="let event of selectedDay.events" class="event-item">
+        <div class="event-color" [style.background]="event.color"></div>
+        <div class="event-details">
+          <div class="event-time">{{ event.time }}</div>
+          <div class="event-title">{{ event.title }}</div>
+          <div *ngIf="event.location" class="event-meta">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" stroke="currentColor" stroke-width="2"/>
+              <path d="M12 22C16 18 20 14.4183 20 10C20 5.58172 16.4183 2 12 2C7.58172 2 4 5.58172 4 10C4 14.4183 8 18 12 22Z" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            {{ event.location }}
+          </div>
+          <div *ngIf="event.description" class="event-description">{{ event.description }}</div>
+          <div *ngIf="event.attendees && event.attendees.length > 0" class="event-attendees">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21M23 21V19C22.9993 18.1137 22.7044 17.2528 22.1614 16.5523C21.6184 15.8519 20.8581 15.3516 20 15.13M16 3.13C16.8604 3.3503 17.623 3.8507 18.1676 4.55231C18.7122 5.25392 19.0078 6.11683 19.0078 7.005C19.0078 7.89317 18.7122 8.75608 18.1676 9.45769C17.623 10.1593 16.8604 10.6597 16 10.88M13 7C13 9.20914 11.2091 11 9 11C6.79086 11 5 9.20914 5 7C5 4.79086 6.79086 3 9 3C11.2091 3 13 4.79086 13 7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            {{ event.attendees.join(', ') }}
+          </div>
+        </div>
+        <button (click)="deleteEvent(event.id)" class="delete-event">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para añadir evento -->
+  <div *ngIf="showEventModal" class="modal-overlay">
+    <div class="event-modal">
+      <div class="modal-header">
+        <h3>NUEVO EVENTO</h3>
+        <button (click)="showEventModal = false" class="close-modal">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>TÍTULO DEL EVENTO</label>
+          <input type="text" [(ngModel)]="newEvent.title" placeholder="Ej: Reunión con equipo">
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label>HORA</label>
+            <input type="time" [(ngModel)]="newEvent.time">
+          </div>
+          <div class="form-group">
+            <label>UBICACIÓN</label>
+            <input type="text" [(ngModel)]="newEvent.location" placeholder="Ej: Sala de reuniones">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label>DESCRIPCIÓN</label>
+          <textarea [(ngModel)]="newEvent.description" placeholder="Detalles del evento"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label>PARTICIPANTES (separados por comas)</label>
+          <input type="text" [(ngModel)]="newEvent.attendees" placeholder="Ej: Juan Pérez, María Gómez">
+        </div>
+        
+        <div class="form-group">
+          <label>COLOR</label>
+          <div class="color-options">
+            <div *ngFor="let color of eventColors" 
+                 [class.selected]="newEvent.color === color"
+                 [style.background]="color"
+                 (click)="newEvent.color = color"></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button (click)="showEventModal = false" class="cancel-button">CANCELAR</button>
+        <button (click)="addEvent()" class="save-button">GUARDAR EVENTO</button>
+      </div>
+    </div>
+  </div>
+</div>

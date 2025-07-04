@@ -1,0 +1,29 @@
+    <div class="login-body">
+        <div class="sqr-anim"></div>
+        <!--Contenedor Principal-->
+        <div class="container">
+            <!--Panel Izquierdo-->
+            <div class="panel-izquierdo">
+                <img src="../../../public/EMSI_logo.png"/>
+            </div>
+            <!--Panel Derecho-->
+            <div class="panel-derecho">
+                <div class="Titulo">
+                    LOGIN
+                </div>
+                <div class="cuerpo">
+                <form class="formulario" (ngSubmit)="login()" #loginForm="ngForm">
+                    <label>Usuario</label>
+                    <input  name="usuario" type="text" placeholder="Ingresar Usuario" [(ngModel)]="username" required />
+                    
+                    <label>Contraseña</label>
+                    <input name="password" type="password" placeholder="Ingresar Contraseña" [(ngModel)]="password" required />
+
+                    <div class="boton_ingresar">
+                        <button type="submit">Ingresar</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,39 @@
+<mat-dialog-content>
+  <mat-toolbar><span>Cliente Info</span></mat-toolbar>
+
+  <div class="example-container">
+    <mat-form-field>
+      <input matInput placeholder="NOMBRE" [(ngModel)]="cliente.nomCliente" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="TIPO CLIENTE" [(ngModel)]="cliente.tipoCliente" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="TIPO DOCUMENTO" [(ngModel)]="cliente.tipoDocumento" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Nro Documento" [(ngModel)]="cliente.numDocumento" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Nro Celular"
+        [(ngModel)]="cliente.numCelular"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Correo"
+        [(ngModel)]="cliente.correo"
+      />
+    </mat-form-field>
+
+    <button mat-button (click)="operate()">Done</button>
+    <button mat-button (click)="close()">Cancel</button>
+  </div>
+</mat-dialog-content>
