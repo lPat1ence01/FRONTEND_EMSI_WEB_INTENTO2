@@ -29,7 +29,7 @@ export const pagesRoutes: Routes = [
   },
   {
     path: 'extintor',
-    loadComponent: () => import('./extintor/extintor.component').then(m => m.ExtintorComponent)
+    component: ExtintorComponent
   },
   {
     path: 'recepcion',

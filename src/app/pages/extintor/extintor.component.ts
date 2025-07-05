@@ -1,72 +1,103 @@
-import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, ViewChild, OnInit } from '@angular/core';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Extintor } from '../../model/extintor';
 import { ExtintorService } from '../../services/extintor.service';
-import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { switchMap } from 'rxjs';
+import { ExtintorDialogComponent } from './extintor-dialog/extintor-dialog.component';
+import { RouterOutlet } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInput } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
-  standalone: true,
   selector: 'app-extintor',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [
+    MatDialogModule,
+    MatSnackBarModule,
+    RouterOutlet,
+    MatSortModule,
+    MatPaginatorModule,
+    MatIconModule,
+    MatButtonModule,
+    MatInput,
+    MatFormFieldModule,
+    MatTableModule
+  ],
   templateUrl: './extintor.component.html',
   styleUrls: ['./extintor.component.css']
 })
 export class ExtintorComponent implements OnInit {
-  form: FormGroup;
+
+  dataSource: MatTableDataSource<Extintor> = new MatTableDataSource<Extintor>();
+
+  columnsDefinitions = [
+    { def: 'idExtintor', label: 'ID', hide: true },
+    { def: 'tipoAgente', label: 'Agente', hide: false },
+    { def: 'claseFuego', label: 'Clase', hide: false },
+    { def: 'capacidadKG', label: 'Capacidad (KG)', hide: false },
+    { def: 'fechaVencimiento', label: 'Vencimiento', hide: false },
+    { def: 'estado', label: 'Estado', hide: false },
+    { def: 'stock', label: 'Stock', hide: false },
+    { def: 'actions', label: 'Actions', hide: false }
+  ];
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(
-    private fb: FormBuilder,
     private extintorService: ExtintorService,
-    private router: Router
+    private _dialog: MatDialog,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
-    this.form = this.fb.group({
-      listaRecepcion: this.fb.array([this.createExtintorGroup()])
+    this.extintorService.findAll().subscribe(data => {
+      this.createTable(data);
     });
+
+    this.extintorService.getExtintorChange().subscribe(data => this.createTable(data));
+
+    this.extintorService.getMessageChange().subscribe(data =>
+      this._snackBar.open(data, 'INFO', {
+        duration: 2000,
+        horizontalPosition: 'right',
+        verticalPosition: 'bottom'
+      })
+    );
   }
 
-  createExtintorGroup(): FormGroup {
-    return this.fb.group({
-      tipoAgente: ['', Validators.required],
-      claseFuego: [{ value: '', disabled: true }],
-      capacidadKG: [0, [Validators.required, Validators.min(0.1)]],
-      cantidad: [1, [Validators.required, Validators.min(1)]],
-      fechaVencimiento: ['', Validators.required]
-    });
+  createTable(data: Extintor[]) {
+    this.dataSource = new MatTableDataSource(data);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
-  get listaRecepcion(): FormArray {
-    return this.form.get('listaRecepcion') as FormArray;
+  applyFilter(event: any) {
+    this.dataSource.filter = event.target.value.trim().toLowerCase();
   }
 
-  addExtintor(): void {
-    this.listaRecepcion.push(this.createExtintorGroup());
+  getDisplayedColumns() {
+    return this.columnsDefinitions.filter(cd => !cd.hide).map(cd => cd.def);
   }
 
-  removeExtintor(index: number): void {
-    if (this.listaRecepcion.length > 1) {
-      this.listaRecepcion.removeAt(index);
-    }
-  }
-
-  onTipoAgenteChange(index: number): void {
-    const tipoAgente = this.listaRecepcion.at(index).get('tipoAgente')?.value;
-    this.listaRecepcion.at(index).get('claseFuego')?.setValue(tipoAgente);
-  }
-
-  registrarRecepcion(): void {
-    if (this.form.valid) {
-      const lista = this.form.getRawValue().listaRecepcion.map((item: any) => ({
-        ...item,
-        estado: 'Operativo',
-        stock: item.cantidad
-      }));
-
-      this.extintorService.registrarRecepcionAgrupada(lista).subscribe(() => {
-        this.router.navigate(['/extintor']);
+  delete(id: number) {
+    this.extintorService.delete(id)
+      .pipe(switchMap(() => this.extintorService.findAll()))
+      .subscribe(data => {
+        this.extintorService.setExtintorChange(data);
+        this.extintorService.setMessageChange('Extintor eliminado!');
       });
-    }
+  }
+
+  openDialog(extintor?: Extintor) {
+    this._dialog.open(ExtintorDialogComponent, {
+      width: '750px',
+      data: extintor
+    });
   }
 }

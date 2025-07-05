@@ -42,7 +42,7 @@ export class RecepcionComponent implements OnInit {
       const datos = this.form.value;
       console.log('Recepción creada con:', datos);
 
-      this.router.navigate(['/extintor'], {
+      this.router.navigate(['/pages/extintor'], {
         state: {
           fecha: datos.fecha,
           proveedorId: datos.proveedorId

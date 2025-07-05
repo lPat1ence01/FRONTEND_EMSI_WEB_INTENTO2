@@ -1,0 +1,32 @@
+<mat-dialog-content>
+  <mat-toolbar><span>Información del Extintor</span></mat-toolbar>
+
+  <div class="example-container">
+    <mat-form-field>
+      <input matInput placeholder="Tipo de Agente" [(ngModel)]="extintor.tipoAgente" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Clase de Fuego" [(ngModel)]="extintor.claseFuego" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input type="number" matInput placeholder="Capacidad (KG)" [(ngModel)]="extintor.capacidadKG" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input type="date" matInput placeholder="Fecha Vencimiento" [(ngModel)]="extintor.fechaVencimiento" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input type="number" matInput placeholder="Stock" [(ngModel)]="extintor.stock" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input type="text" matInput placeholder="Estado (true/false)" [(ngModel)]="extintor.estado" />
+    </mat-form-field>
+
+    <button mat-button color="primary" (click)="operate()">Guardar</button>
+    <button mat-button color="warn" (click)="close()">Cancelar</button>
+  </div>
+</mat-dialog-content>

@@ -1,53 +1,67 @@
-<h2 class="text-center mt-4">Recepción Agrupada de Extintores</h2>
+<router-outlet></router-outlet>
 
-<form [formGroup]="form" (ngSubmit)="registrarRecepcion()">
-  <div class="container mt-4">
-    <div formArrayName="listaRecepcion">
-      <div class="row g-3 mb-3 extintor-item" *ngFor="let extintor of listaRecepcion.controls; let i = index" [formGroupName]="i">
-        <div class="col-md-3">
-          <label class="form-label">Tipo de Agente</label>
-          <select formControlName="tipoAgente" class="form-select" (change)="onTipoAgenteChange(i)" required>
-            <option value="">-- Seleccione --</option>
-            <option value="A">Clase A - Sólidos</option>
-            <option value="B">Clase B - Líquidos inflamables</option>
-            <option value="C">Clase C - Gases inflamables</option>
-            <option value="D">Clase D - Metales combustibles</option>
-            <option value="K">Clase K - Grasas y aceites</option>
-          </select>
-        </div>
+<mat-form-field>
+  <mat-label>Buscar</mat-label>
+  <input matInput (keyup)="applyFilter($event)" placeholder="Buscar extintor">
+</mat-form-field>
 
-        <div class="col-md-2">
-          <label class="form-label">Clase de Fuego</label>
-          <input type="text" formControlName="claseFuego" class="form-control" readonly />
-        </div>
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" matSort>
 
-        <div class="col-md-2">
-          <label class="form-label">Capacidad (KG)</label>
-          <input type="number" formControlName="capacidadKG" class="form-control" step="0.1" required />
-        </div>
+    <ng-container matColumnDef="idExtintor">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+      <td mat-cell *matCellDef="let item"> {{item.idExtintor}} </td>
+    </ng-container>
 
-        <div class="col-md-2">
-          <label class="form-label">Cantidad</label>
-          <input type="number" formControlName="cantidad" class="form-control" required />
-        </div>
+    <ng-container matColumnDef="tipoAgente">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> AGENTE </th>
+      <td mat-cell *matCellDef="let item"> {{item.tipoAgente}} </td>
+    </ng-container>
 
-        <div class="col-md-2">
-          <label class="form-label">Fecha Vencimiento</label>
-          <input type="date" formControlName="fechaVencimiento" class="form-control" required />
-        </div>
+    <ng-container matColumnDef="claseFuego">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> CLASE </th>
+      <td mat-cell *matCellDef="let item"> {{item.claseFuego}} </td>
+    </ng-container>
 
-        <div class="col-md-1 d-flex align-items-end">
-          <button type="button" class="btn btn-danger" (click)="removeExtintor(i)">✖</button>
-        </div>
-      </div>
-    </div>
+    <ng-container matColumnDef="capacidadKG">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> CAPACIDAD (KG) </th>
+      <td mat-cell *matCellDef="let item"> {{item.capacidadKG}} </td>
+    </ng-container>
 
-    <div class="text-end mt-3">
-      <button type="button" class="btn btn-secondary" (click)="addExtintor()">+ Agregar Otro</button>
-    </div>
+    <ng-container matColumnDef="fechaVencimiento">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> VENCIMIENTO </th>
+      <td mat-cell *matCellDef="let item"> {{item.fechaVencimiento}} </td>
+    </ng-container>
 
-    <div class="text-center mt-4">
-      <button type="submit" class="btn btn-success">Registrar Recepción</button>
-    </div>
-  </div>
-</form>
+    <ng-container matColumnDef="estado">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> ESTADO </th>
+      <td mat-cell *matCellDef="let item"> {{item.estado ? 'Activo' : 'Inactivo'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="stock">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> STOCK </th>
+      <td mat-cell *matCellDef="let item"> {{item.stock}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef class="actions"> ACCIONES </th>
+      <td mat-cell *matCellDef="let item">
+        <button mat-button (click)="openDialog(item)">
+          <mat-icon>mode_edit</mat-icon>
+        </button>
+        <button mat-button (click)="delete(item.idExtintor)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="getDisplayedColumns()"></tr>
+    <tr mat-row *matRowDef="let item; columns: getDisplayedColumns();"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" aria-label="Paginación de extintores"></mat-paginator>
+</div>
+
+<button mat-fab style="float: right;" (click)="openDialog()">
+  <mat-icon>add</mat-icon>
+</button>

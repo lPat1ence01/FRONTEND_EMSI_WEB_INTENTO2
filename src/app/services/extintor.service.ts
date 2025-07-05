@@ -1,9 +1,9 @@
 import { inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Subject } from 'rxjs';
+import { environment } from '../../environments/environment';
 import { GenericService } from './generic.service';
 import { Extintor } from '../model/extintor';
-import { Subject } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -16,30 +16,27 @@ export class ExtintorService extends GenericService<Extintor> {
   constructor() {
     super(
       inject(HttpClient),
-      `${environment.HOST}/extintores`
+      `${environment.HOST}/extintores`  // Asegúrate que esta ruta coincida con tu backend
     );
   }
 
-  // Para emitir lista actualizada
+  // Emitir cambios en la lista de extintores
   setExtintorChange(data: Extintor[]) {
     this.extintorChange.next(data);
   }
 
+  // Escuchar cambios en la lista de extintores
   getExtintorChange() {
     return this.extintorChange.asObservable();
   }
 
-  // Para emitir mensajes
+  // Emitir mensajes
   setMessageChange(data: string) {
     this.messageChange.next(data);
   }
 
+  // Escuchar mensajes
   getMessageChange() {
     return this.messageChange.asObservable();
-  }
-
-  // Para registrar múltiples extintores de una recepción
-  registrarRecepcionAgrupada(extintores: any[]) {
-    return this.http.post(`${environment.HOST}/extintores/recepcion-agrupada`, extintores);
   }
 }
