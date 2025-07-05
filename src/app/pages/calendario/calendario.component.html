@@ -1,7 +1,7 @@
 <div class="calendar-container">
   <div class="calendar-header">
     <div class="header-left">
-      <h1 class="calendar-title">CALENDARIO EMSI</h1>
+      <h1 class="calendar-title">Calendario</h1>
       <div class="view-options">
         <button [class.active]="viewMode === 'month'" (click)="setViewMode('month')">Mes</button>
         <button [class.active]="viewMode === 'week'" (click)="setViewMode('week')">Semana</button>
@@ -11,24 +11,24 @@
     
     <div class="header-right">
       <div class="month-navigation">
-        <button (click)="previousMonth()" class="nav-button">
+        <button (click)="previousMonth()" class="nav-button" aria-label="Mes anterior">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </button>
-        <h2 class="current-month">{{ currentMonthNameWithYear | uppercase }}</h2>
-        <button (click)="nextMonth()" class="nav-button">
+        <h2 class="current-month">{{ currentMonthNameWithYear | titlecase }}</h2>
+        <button (click)="nextMonth()" class="nav-button" aria-label="Mes siguiente">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </button>
       </div>
-      <button (click)="goToToday()" class="today-button">HOY</button>
+      <button (click)="goToToday()" class="today-button">Hoy</button>
     </div>
   </div>
 
   <div class="weekdays-header">
-    <div *ngFor="let day of weekDays" class="weekday">{{ day | uppercase }}</div>
+    <div *ngFor="let day of weekDays" class="weekday">{{ day }}</div>
   </div>
 
   <div class="days-grid">
@@ -37,7 +37,8 @@
          [class.current-day]="day.isToday"
          [class.selected-day]="day.isSelected"
          (click)="selectDay(day)"
-         class="calendar-day">
+         class="calendar-day"
+         [attr.aria-label]="'Día ' + day.number + (day.inMonth ? ' de ' + currentMonthName : ' del mes ' + (day.number > 15 ? 'anterior' : 'siguiente'))">
       <div class="day-header">
         <span class="day-number">{{ day.number }}</span>
         <div *ngIf="day.events.length > 0" class="event-indicators">
@@ -49,7 +50,8 @@
       <div *ngIf="day.events.length > 0" class="day-events-preview">
         <div *ngFor="let event of day.events.slice(0, 2)" 
              class="event-preview" 
-             [style.border-left-color]="event.color">
+             [style.border-left-color]="event.color"
+             [class.completed]="event.completed">
           <span class="event-time">{{ event.time }}</span>
           <span class="event-title">{{ event.title }}</span>
         </div>
@@ -62,12 +64,12 @@
 
   <div class="events-panel" *ngIf="selectedDay">
     <div class="events-panel-header">
-      <h3>EVENTOS - {{ selectedDay.number }} DE {{ currentMonthName | uppercase }}</h3>
+      <h3>Eventos - {{ selectedDay.number }} de {{ currentMonthName | lowercase }}</h3>
       <button (click)="openAddEvent()" class="add-event-button">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>
-        NUEVO EVENTO
+        Nuevo evento
       </button>
     </div>
     
@@ -80,7 +82,7 @@
     </div>
     
     <div class="events-list">
-      <div *ngFor="let event of selectedDay.events" class="event-item">
+      <div *ngFor="let event of selectedDay.events" class="event-item" [class.completed]="event.completed">
         <div class="event-color" [style.background]="event.color"></div>
         <div class="event-details">
           <div class="event-time">{{ event.time }}</div>
@@ -100,21 +102,34 @@
             {{ event.attendees.join(', ') }}
           </div>
         </div>
-        <button (click)="deleteEvent(event.id)" class="delete-event">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-        </button>
+        <div class="event-actions">
+          <button (click)="toggleEventCompletion(event)" class="complete-button" [class.completed]="event.completed" aria-label="Marcar como completado">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path *ngIf="event.completed" d="M9 11L12 14L22 4M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C14.4853 3 16.7353 4.00736 18.364 5.63604" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path *ngIf="!event.completed" d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <button (click)="openEditEvent(event)" class="edit-button" aria-label="Editar evento">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13M18.5 2.5C18.8978 2.10217 19.4374 1.87868 20 1.87868C20.5626 1.87868 21.1022 2.10217 21.5 2.5C21.8978 2.89782 22.1213 3.43739 22.1213 4C22.1213 4.56261 21.8978 5.10217 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <button (click)="deleteEvent(event.id)" class="delete-button" aria-label="Eliminar evento">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Modal para añadir evento -->
-  <div *ngIf="showEventModal" class="modal-overlay">
-    <div class="event-modal">
+  <!-- Modal para añadir/editar evento -->
+  <div *ngIf="showEventModal" class="modal-overlay" (click)="showEventModal = false">
+    <div class="event-modal" (click)="$event.stopPropagation()">
       <div class="modal-header">
-        <h3>NUEVO EVENTO</h3>
-        <button (click)="showEventModal = false" class="close-modal">
+        <h3>{{ editedEvent ? 'EDITAR EVENTO' : 'NUEVO EVENTO' }}</h3>
+        <button (click)="showEventModal = false" class="close-modal" aria-label="Cerrar modal">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
           </svg>
@@ -122,44 +137,53 @@
       </div>
       <div class="modal-body">
         <div class="form-group">
-          <label>TÍTULO DEL EVENTO</label>
+          <label>Título del evento</label>
           <input type="text" [(ngModel)]="newEvent.title" placeholder="Ej: Reunión con equipo">
         </div>
         
         <div class="form-row">
           <div class="form-group">
-            <label>HORA</label>
+            <label>Hora</label>
             <input type="time" [(ngModel)]="newEvent.time">
           </div>
           <div class="form-group">
-            <label>UBICACIÓN</label>
+            <label>Ubicación</label>
             <input type="text" [(ngModel)]="newEvent.location" placeholder="Ej: Sala de reuniones">
           </div>
         </div>
         
         <div class="form-group">
-          <label>DESCRIPCIÓN</label>
+          <label>Descripción</label>
           <textarea [(ngModel)]="newEvent.description" placeholder="Detalles del evento"></textarea>
         </div>
         
         <div class="form-group">
-          <label>PARTICIPANTES (separados por comas)</label>
+          <label>Participantes (separados por comas)</label>
           <input type="text" [(ngModel)]="newEvent.attendees" placeholder="Ej: Juan Pérez, María Gómez">
         </div>
         
         <div class="form-group">
-          <label>COLOR</label>
+          <label>Color</label>
           <div class="color-options">
             <div *ngFor="let color of eventColors" 
                  [class.selected]="newEvent.color === color"
                  [style.background]="color"
-                 (click)="newEvent.color = color"></div>
+                 (click)="newEvent.color = color"
+                 [attr.aria-label]="'Color ' + color"></div>
           </div>
+        </div>
+
+        <div class="form-group checkbox-group">
+          <label class="checkbox-container">
+            <input type="checkbox" [(ngModel)]="newEvent.completed">
+            <span class="checkmark"></span>
+            Evento completado
+          </label>
         </div>
       </div>
       <div class="modal-footer">
-        <button (click)="showEventModal = false" class="cancel-button">CANCELAR</button>
-        <button (click)="addEvent()" class="save-button">GUARDAR EVENTO</button>
+        <button (click)="showEventModal = false" class="cancel-button">Cancelar</button>
+        <button (click)="saveEvent()" class="save-button">{{ editedEvent ? 'Guardar cambios' : 'Crear evento' }}</button>
       </div>
     </div>
   </div>

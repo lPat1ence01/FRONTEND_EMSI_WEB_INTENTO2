@@ -4,6 +4,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { GestionusuariosComponent } from './gestionusuarios/gestionusuarios.component';
 import { ProveedorComponent } from './proveedor/proveedor.component';
 import { ExtintorComponent } from './extintor/extintor.component';
+import { CalendarioComponent } from './calendario/calendario.component';
 
 export const pagesRoutes: Routes = [
   {
@@ -30,6 +31,10 @@ export const pagesRoutes: Routes = [
   {
     path: 'extintor',
     component: ExtintorComponent
+  },
+  {
+    path: 'calendario',
+    component: CalendarioComponent
   },
   {
     path: 'recepcion',
