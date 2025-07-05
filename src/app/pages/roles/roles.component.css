@@ -1,0 +1,17 @@
+table {
+  width: 100%;
+}
+
+.mat-form-field {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.actions {
+  width: 120px;
+}
+
+.fab-button {
+  float: right;
+  margin-top: 20px;
+}
