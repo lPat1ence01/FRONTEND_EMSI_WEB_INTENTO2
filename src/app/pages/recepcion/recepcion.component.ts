@@ -4,11 +4,24 @@ import { Router, RouterModule } from '@angular/router';
 import { ProveedorService } from '../../services/proveedor.service';
 import { Proveedor } from '../../model/proveedor';
 import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   standalone: true,
   selector: 'app-recepcion',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    RouterModule
+  ],
   templateUrl: './recepcion.component.html',
   styleUrls: ['./recepcion.component.css']
 })

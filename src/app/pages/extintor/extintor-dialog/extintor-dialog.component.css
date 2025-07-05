@@ -1,9 +1,40 @@
-.example-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.dialog-content {
+  padding: 0;
+  background-color: #f3f6fd; /* fondo suave */
+  border-radius: 10px;
 }
 
-.example-container > * {
+.toolbar {
+  background-color: #1976d2;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 24px;
+}
+
+.form-field {
   width: 100%;
+  background-color: #ffffff;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 10px;
+}
+
+button[mat-raised-button] {
+  font-weight: bold;
+  border-radius: 8px;
 }

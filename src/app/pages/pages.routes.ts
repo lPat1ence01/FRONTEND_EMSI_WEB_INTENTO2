@@ -4,6 +4,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { GestionusuariosComponent } from './gestionusuarios/gestionusuarios.component';
 import { ProveedorComponent } from './proveedor/proveedor.component';
 import { ExtintorComponent } from './extintor/extintor.component';
+import { InventarioComponent } from './inventario/inventario.component';
 
 export const pagesRoutes: Routes = [
   {
@@ -34,5 +35,9 @@ export const pagesRoutes: Routes = [
   {
     path: 'recepcion',
     loadComponent: () => import('./recepcion/recepcion.component').then(m => m.RecepcionComponent)
+  },
+  {
+    path: 'inventario',
+    component: InventarioComponent
   }
 ];

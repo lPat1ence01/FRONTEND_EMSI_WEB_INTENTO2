@@ -6,6 +6,4 @@ export class Extintor {
     fechaVencimiento: string;
     estado: boolean;
     stock: number;
-    ventaId?: number;
-    recepcionId?: number;
 }
