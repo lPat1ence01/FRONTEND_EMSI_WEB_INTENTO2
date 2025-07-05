@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import { ProveedorService } from '../../services/proveedor.service';
 import { Proveedor } from '../../model/proveedor';
+import { CommonModule } from '@angular/common';
 
 @Component({
+  standalone: true,
   selector: 'app-recepcion',
-  imports: [
-    ReactiveFormsModule,
-    FormsModule
-  ],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
   templateUrl: './recepcion.component.html',
   styleUrls: ['./recepcion.component.css']
 })
@@ -30,20 +29,24 @@ export class RecepcionComponent implements OnInit {
     });
 
     this.proveedorService.findAll().subscribe({
-      next: (data) => this.proveedores = data,
-      error: (err) => console.error('Error al cargar proveedores:', err)
+      next: (data) => {
+        console.log('✅ Proveedores cargados:', data);
+        this.proveedores = data;
+      },
+      error: (err) => console.error('❌ Error al cargar proveedores:', err)
     });
   }
 
   realizarRecepcion(): void {
     if (this.form.valid) {
       const datos = this.form.value;
-
-      // Aquí puedes hacer un POST al backend si lo deseas antes de redirigir
       console.log('Recepción creada con:', datos);
 
       this.router.navigate(['/extintor'], {
-        state: { fecha: datos.fecha, proveedorId: datos.proveedorId }
+        state: {
+          fecha: datos.fecha,
+          proveedorId: datos.proveedorId
+        }
       });
     }
   }

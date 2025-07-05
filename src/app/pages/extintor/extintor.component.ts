@@ -1,13 +1,14 @@
-// extintor.component.ts
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Extintor } from '../../model/extintor';
 import { ExtintorService } from '../../services/extintor.service';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
+  standalone: true,
   selector: 'app-extintor',
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './extintor.component.html',
   styleUrls: ['./extintor.component.css']
 })
@@ -57,15 +58,14 @@ export class ExtintorComponent implements OnInit {
 
   registrarRecepcion(): void {
     if (this.form.valid) {
-      const lista = this.form.value.listaRecepcion.map((item: any) => ({
+      const lista = this.form.getRawValue().listaRecepcion.map((item: any) => ({
         ...item,
-        claseFuego: item.tipoAgente, // Asegurar que el campo deshabilitado sea incluido
         estado: 'Operativo',
         stock: item.cantidad
       }));
 
       this.extintorService.registrarRecepcionAgrupada(lista).subscribe(() => {
-        this.router.navigate(['/extintores']);
+        this.router.navigate(['/extintor']);
       });
     }
   }
