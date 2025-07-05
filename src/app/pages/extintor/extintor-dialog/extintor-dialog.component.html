@@ -1,32 +1,51 @@
-<mat-dialog-content>
-  <mat-toolbar><span>Información del Extintor</span></mat-toolbar>
+<mat-dialog-content class="dialog-content">
+  <mat-toolbar color="accent" class="toolbar">
+    <span>🧯 Información del Extintor</span>
+  </mat-toolbar>
 
-  <div class="example-container">
-    <mat-form-field>
-      <input matInput placeholder="Tipo de Agente" [(ngModel)]="extintor.tipoAgente" />
+  <div class="form-container">
+
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Tipo de Agente</mat-label>
+      <mat-select [(ngModel)]="extintor.tipoAgente" (selectionChange)="onAgenteChange($event.value)">
+        <mat-option *ngFor="let tipo of agentTypes" [value]="tipo">
+          {{ tipo }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
 
-    <mat-form-field>
-      <input matInput placeholder="Clase de Fuego" [(ngModel)]="extintor.claseFuego" />
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Clase de Fuego</mat-label>
+      <input matInput [(ngModel)]="extintor.claseFuego" disabled />
     </mat-form-field>
 
-    <mat-form-field>
-      <input type="number" matInput placeholder="Capacidad (KG)" [(ngModel)]="extintor.capacidadKG" />
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Capacidad (KG)</mat-label>
+      <input type="number" matInput [(ngModel)]="extintor.capacidadKG" />
     </mat-form-field>
 
-    <mat-form-field>
-      <input type="date" matInput placeholder="Fecha Vencimiento" [(ngModel)]="extintor.fechaVencimiento" />
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Fecha Vencimiento</mat-label>
+      <input type="date" matInput [(ngModel)]="extintor.fechaVencimiento" />
     </mat-form-field>
 
-    <mat-form-field>
-      <input type="number" matInput placeholder="Stock" [(ngModel)]="extintor.stock" />
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Stock</mat-label>
+      <input type="number" matInput [(ngModel)]="extintor.stock" />
     </mat-form-field>
 
-    <mat-form-field>
-      <input type="text" matInput placeholder="Estado (true/false)" [(ngModel)]="extintor.estado" />
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Estado</mat-label>
+      <mat-select [(ngModel)]="extintor.estado">
+        <mat-option [value]="true">🟢 Activo</mat-option>
+        <mat-option [value]="false">🔴 Inactivo</mat-option>
+      </mat-select>
     </mat-form-field>
 
-    <button mat-button color="primary" (click)="operate()">Guardar</button>
-    <button mat-button color="warn" (click)="close()">Cancelar</button>
+    <div class="button-group">
+      <button mat-raised-button color="primary" (click)="operate()">💾 Guardar</button>
+      <button mat-raised-button color="warn" (click)="close()">❌ Cancelar</button>
+    </div>
+
   </div>
 </mat-dialog-content>

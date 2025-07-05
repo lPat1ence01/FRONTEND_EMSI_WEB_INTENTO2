@@ -8,15 +8,18 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { switchMap } from 'rxjs';
 import { ExtintorDialogComponent } from './extintor-dialog/extintor-dialog.component';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInput } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-extintor',
+  standalone: true,
   imports: [
+    CommonModule,
     MatDialogModule,
     MatSnackBarModule,
     RouterOutlet,
@@ -34,6 +37,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 export class ExtintorComponent implements OnInit {
 
   dataSource: MatTableDataSource<Extintor> = new MatTableDataSource<Extintor>();
+  today: Date = new Date(); // <----- FECHA ACTUAL
 
   columnsDefinitions = [
     { def: 'idExtintor', label: 'ID', hide: true },
@@ -52,7 +56,8 @@ export class ExtintorComponent implements OnInit {
   constructor(
     private extintorService: ExtintorService,
     private _dialog: MatDialog,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -99,5 +104,11 @@ export class ExtintorComponent implements OnInit {
       width: '750px',
       data: extintor
     });
+  }
+
+  finalizarRecepcion() {
+    this.dataSource.data = [];
+    this.extintorService.setExtintorChange([]);
+    this.router.navigate(['/pages/recepcion'])
   }
 }
