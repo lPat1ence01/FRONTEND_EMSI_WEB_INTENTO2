@@ -1,7 +1,7 @@
 import { Routes } from "@angular/router";
 import { DashboardComponent } from "./dashboard/dashboard.component";
-import { RolesComponent } from "./roles/roles.component";
-import { RolesEditComponent } from "./roles/roles-edit/roles-edit.component";
+import { RoleComponent } from "./roles/roles.component";
+import { RoleDialogComponent } from "./roles/roles-edit/roles-edit.component";
 import { EmpleadoComponent } from "./empleado/empleado.component";
 import { EmpleadoEditComponent } from "./empleado/empleado-edit/empleado-edit.component";
 import { ClienteComponent } from "./cliente/cliente.component";
@@ -38,18 +38,10 @@ export const pagesRoutes: Routes = [
         component: ExtintorComponent
     },
     {
-        path: 'roles',
-        component: RolesComponent, children: [
-            {
-                path: 'new',
-                component: RolesEditComponent
-            },
-            {
-                path: 'edit/id',
-                component: RolesEditComponent
-            }
-        ]
-    },
+    path: 'roles',
+    component: RoleComponent
+    }
+    ,
     {
         path: 'empleado',
         component: EmpleadoComponent, children: [

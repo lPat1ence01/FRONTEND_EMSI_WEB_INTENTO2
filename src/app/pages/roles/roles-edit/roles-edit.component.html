@@ -1,1 +1,24 @@
-<p>roles-edit.component works!</p>
+<mat-dialog-content>
+  <mat-toolbar>
+    <span>Información del Rol</span>
+  </mat-toolbar>
+
+  <form class="form-container" #form="ngForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Nombre</mat-label>
+      <input matInput required [(ngModel)]="role.name" name="name" #name="ngModel">
+      <mat-error *ngIf="name.invalid && name.touched">Campo obligatorio</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Descripción</mat-label>
+      <input matInput required [(ngModel)]="role.description" name="description" #desc="ngModel">
+      <mat-error *ngIf="desc.invalid && desc.touched">Campo obligatorio</mat-error>
+    </mat-form-field>
+
+    <div class="buttons">
+      <button mat-raised-button color="primary" (click)="operate()" [disabled]="form.invalid">Guardar</button>
+      <button mat-button (click)="close()">Cancelar</button>
+    </div>
+  </form>
+</mat-dialog-content>
