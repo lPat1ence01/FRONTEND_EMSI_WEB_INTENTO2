@@ -1,0 +1,41 @@
+.search-field {
+  width: 300px;
+  margin-bottom: 16px;
+}
+
+.ventas-table {
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* Alineación para las celdas y headers */
+.mat-cell,
+.mat-header-cell {
+  vertical-align: middle;
+  text-align: center;
+  padding: 12px;
+}
+
+/* Estilo para acciones */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  height: 100%;
+}
+
+/* Lista de extintores vendida */
+.detalles-lista {
+  margin: 0;
+  padding-left: 16px;
+  text-align: left;
+}
+
+/* Botón flotante */
+.fab-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 100;
+}

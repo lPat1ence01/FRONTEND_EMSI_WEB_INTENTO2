@@ -1,0 +1,89 @@
+<mat-form-field appearance="fill" class="search-field">
+  <mat-label>Buscar</mat-label>
+  <input matInput (keyup)="applyFilter($event)" placeholder="Buscar venta..." />
+</mat-form-field>
+
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" matSort class="ventas-table">
+
+    <!-- ID Venta -->
+    <ng-container matColumnDef="idVenta">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+      <td mat-cell *matCellDef="let venta">{{ venta.idVenta }}</td>
+    </ng-container>
+
+    <!-- Total -->
+    <ng-container matColumnDef="total">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Total</th>
+      <td mat-cell *matCellDef="let venta">{{ venta.total | currency:'PEN':'symbol' }}</td>
+    </ng-container>
+
+    <!-- Fecha -->
+    <ng-container matColumnDef="fechaVenta">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
+      <td mat-cell *matCellDef="let venta">{{ venta.fechaVenta | date:'dd/MM/yyyy' }}</td>
+    </ng-container>
+
+    <!-- Método de Pago -->
+    <ng-container matColumnDef="metodoPago">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Método de Pago</th>
+      <td mat-cell *matCellDef="let venta">{{ venta.metodoPago }}</td>
+    </ng-container>
+
+    <!-- ID Cliente -->
+    <ng-container matColumnDef="idCliente">
+      <th mat-header-cell *matHeaderCellDef>ID Cliente</th>
+      <td mat-cell *matCellDef="let venta">{{ venta.idCliente }}</td>
+    </ng-container>
+
+    <!-- ID Empleado -->
+    <ng-container matColumnDef="idEmpleado">
+      <th mat-header-cell *matHeaderCellDef>ID Empleado</th>
+      <td mat-cell *matCellDef="let venta">{{ venta.idEmpleado }}</td>
+    </ng-container>
+
+    <!-- Detalles -->
+    <ng-container matColumnDef="detalles">
+      <th mat-header-cell *matHeaderCellDef>Extintores Vendidos</th>
+      <td mat-cell *matCellDef="let venta">
+        <div *ngIf="venta.detalles?.length > 0; else noDetalles">
+          <ul class="detalles-lista">
+            <li *ngFor="let det of venta.detalles">
+              ID Extintor: {{ det.idExtintor }}, Cant: {{ det.cantidad }}
+            </li>
+          </ul>
+        </div>
+        <ng-template #noDetalles>No hay detalles</ng-template>
+      </td>
+    </ng-container>
+
+    <!-- Acciones -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Acciones</th>
+      <td mat-cell *matCellDef="let venta">
+        <div class="action-buttons">
+          <button mat-icon-button color="primary" (click)="openDialog(venta)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="delete(venta.idVenta)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="getDisplayedColumns()"></tr>
+    <tr mat-row *matRowDef="let venta; columns: getDisplayedColumns();"></tr>
+  </table>
+
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons
+    aria-label="Selector de página">
+  </mat-paginator>
+</div>
+
+<!-- Botón flotante para nueva venta -->
+<button mat-fab color="primary" class="fab-button" (click)="openDialog()">
+  <mat-icon>add</mat-icon>
+</button>

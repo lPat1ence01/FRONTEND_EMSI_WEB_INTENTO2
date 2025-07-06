@@ -1,0 +1,84 @@
+<mat-dialog-content>
+  <mat-toolbar color="primary">
+    <span>{{ venta?.idVenta ? 'Editar Venta' : 'Registrar Venta' }}</span>
+  </mat-toolbar>
+
+  <form class="form-container" #form="ngForm">
+    <!-- DATOS DE LA VENTA -->
+    <mat-form-field appearance="fill">
+      <mat-label>Total</mat-label>
+      <input matInput type="number" required [(ngModel)]="venta.total" name="total" #total="ngModel">
+      <mat-error *ngIf="total.invalid && total.touched">Campo obligatorio</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Fecha de Venta</mat-label>
+      <input matInput type="date" required [(ngModel)]="venta.fechaVenta" name="fechaVenta" #fechaVenta="ngModel" />
+      <mat-error *ngIf="fechaVenta.invalid && fechaVenta.touched">Campo obligatorio</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Método de Pago</mat-label>
+      <mat-select [(ngModel)]="venta.metodoPago" name="metodoPago" required #metodo="ngModel">
+        <mat-option value="Efectivo">Efectivo</mat-option>
+        <mat-option value="Tarjeta">Tarjeta</mat-option>
+        <mat-option value="Yape/Plin">Yape/Plin</mat-option>
+      </mat-select>
+      <mat-error *ngIf="metodo.invalid && metodo.touched">Seleccione un método</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>ID Cliente</mat-label>
+      <input matInput type="number" required [(ngModel)]="venta.idCliente" name="idCliente" #cliente="ngModel">
+      <mat-error *ngIf="cliente.invalid && cliente.touched">Campo obligatorio</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>ID Empleado</mat-label>
+      <input matInput type="number" required [(ngModel)]="venta.idEmpleado" name="idEmpleado" #empleado="ngModel">
+      <mat-error *ngIf="empleado.invalid && empleado.touched">Campo obligatorio</mat-error>
+    </mat-form-field>
+
+    <!-- SECCIÓN DE DETALLES: AGREGAR EXTINTORES -->
+    <div class="detalle-title">Agregar Extintores a la Venta</div>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Extintor</mat-label>
+      <mat-select [(ngModel)]="detalle.idExtintor" name="idExtintor">
+        <mat-option *ngFor="let extintor of extintoresDisponibles" [value]="extintor.idExtintor">
+          #{{ extintor.idExtintor }} - {{ extintor.tipoAgente }} (Stock: {{ extintor.stock }})
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Cantidad</mat-label>
+      <input matInput type="number" [(ngModel)]="detalle.cantidad" name="cantidad">
+    </mat-form-field>
+
+    <button mat-raised-button color="accent" (click)="agregarDetalle()" type="button">
+      + Agregar Detalle
+    </button>
+
+    <!-- LISTA DE DETALLES AGREGADOS -->
+    <div *ngIf="detalles.length > 0" class="detalle-lista">
+      <h4>Extintores agregados:</h4>
+      <ul>
+        <li *ngFor="let d of detalles; let i = index">
+          ID Extintor: {{ d.idExtintor }} | Cantidad: {{ d.cantidad }}
+          <button mat-icon-button color="warn" (click)="eliminarDetalle(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <!-- BOTONES -->
+    <div class="buttons">
+      <button mat-raised-button color="primary" (click)="operate()" [disabled]="form.invalid">
+        Guardar
+      </button>
+      <button mat-button (click)="close()">Cancelar</button>
+    </div>
+  </form>
+</mat-dialog-content>
